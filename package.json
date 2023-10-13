@@ -1,0 +1,30 @@
+{
+  "name": "quarz_crontab_parse",
+  "version": "0.0.1",
+  "description": "解析QuarzCrontab表达式为中文时间",
+  "keywords": ["typescript", "cron", "crontab"],
+  "main": "src/index.ts",
+  "author": "xingjiexu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/github-2013/quarz_crontab_parse.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "lint": "eslint --ext .ts ."
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.3"
+  }
+}
