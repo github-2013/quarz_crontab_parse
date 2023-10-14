@@ -7,97 +7,109 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<h1>CRONTAB Test</h1>
-<script src="../dist/index.js" >
+<h1>Crontab Parse Test</h1>
+<p>打开console查看测试结果</p>
+<script src="../dist/index.umd.js"></script>
 <script>
-testCronExpression()
+// console.log(parseCrontab('0 0 0 * * ? *'))
+// console.log(parseCrontab('0 0,1,2,3 0 * * ? *'))
+// console.log(parseCrontab("30-59 0 0 * * ? *"))
+// console.log(parseCrontab("* * 0 * * ? *"))
+// console.log(parseCrontab("* * * * * ? *"))
+// console.log(parseCrontab("0 0 * * * ? *"))
+// console.log(parseCrontab("* * 0-1 * * ? *"))
+// console.log(parseCrontab("* * 0 * * ? *"))
+// console.log(parseCrontab("0 ? ? ? ? ? "))
+console.log(parseCrontab("0,1 ? ? ? ? ?"))
+// console.log(parseCrontab("0 0 * * * ? "))
 
+// testCronExpression()
 function testCronExpression() {
     let cronExpression = '';
     // 表示在每月的1日的凌晨2点执行
     cronExpression = '0 0 2 1 * ? *';
     console.log(cronExpression);
-    console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    console.log(parseCrontab(cronExpression));
 
     // 0 15 10 ? * 2-6 表示周一到周五每天上午10:15执行作业
     // cronExpression = '0 15 10 ? * 2-6';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每天上午10点，下午2点，4点
     // cronExpression = '0 0 10,14,16 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每天下午2点到下午2:05期间的每1分钟触发
     // cronExpression = '0 5 14-16 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每月最后一日的上午10:15触发
     // cronExpression = '0 15 10 L * ? ';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每月的星期五上午10:15触发
     // cronExpression = '0 15 10 ? * 6';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 2002 每天中午12点触发
     // cronExpression = '0 0 12 * * ? 2002';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
-    // 2002-2005年 每天中午10点15分触发
+    // 2002到2005年每天中午10点15分触发
     cronExpression = '0 15 10 ? * ? 2002-2005';
     console.log(cronExpression);
-    console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    console.log(parseCrontab(cronExpression));
 
     // 每月的最后一个星期五上午10:15触发
     // cronExpression = '0 15 10 ? * 6L';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每月第四周的星期五10点15分触发
     // cronExpression = '0 15 10 6#4 * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每天上午10:15触发
     // cronExpression = '0 15 10 * * ? *';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 2005年的每天上午10:15触发
     // cronExpression = '0 15 10 * * ? 2005';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 在每天下午2点到下午2:59期间的每1分钟触发
     // cronExpression = '0 * 14 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 在每天下午2点到下午2:55期间的每5分钟触发
     // cronExpression = '0 0/5 14 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发
     // cronExpression = '0 0/5 14,18 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 每天23点到23:59分每4个小时的58分钟内每10秒触发
     // cronExpression = '8/10 0/5 3/4 * * ?';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 
     // 2021年星期三周一到周四7点触发
     // cronExpression = '0 0 7 ? 1-5 WED 2021';
     // console.log(cronExpression);
-    // console.log(translateToChinese(cronExpression, CRON_TIME_CN));
+    // console.log(parseCrontab(cronExpression));
 }
 </script>
 <body>

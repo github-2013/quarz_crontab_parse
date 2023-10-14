@@ -2,7 +2,7 @@
 
 将复杂难懂的quarzcrontab表达式转换为中文
 
-表达式例子：
+#### 表达式例子：
 ```
 0 15 10 ? * 2-6 表示周一到周五每天上午10:15执行作业
     
@@ -37,12 +37,21 @@
 0 0 7 ? 1-5 WED 2021 2021年星期三周一到周四7点触发
 ```
 
-Usage
+## Usage
+### esmodule下使用
 ```
 npm install quarz_crontab_parse -S
 
 import parseCrontab from 'quarz_crontab_parse'
 
+...
+const crontabCn = parseCrontab('0 15 10 ? * 2-6')
+console.log(crontabCn)
+...
+
+```
+### umd环境下
+```
 ...
 const crontabCn = parseCrontab('0 15 10 ? * 2-6')
 console.log(crontabCn)
@@ -69,7 +78,7 @@ console.log(crontabCn)
 **-**：表示范围。
 > 例如在Minutes域使用5-20，表示从5分到20分钟每分钟触发一次
 
-**，**：表示列出枚举值。
+**,**：表示列出枚举值。
 > 例如在Minutes域使用5，20，则意味着在5和20分每分钟触发一次。
 
 **L**：表示最后，只能出现在DayOfWeek和DayOfMonth域。
