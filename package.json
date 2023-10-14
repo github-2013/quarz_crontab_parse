@@ -20,7 +20,7 @@
     "url": "https://github.com/github-2013/quarz_crontab_parse.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "rollup -cw rollup.config.mjs",
     "build": "rollup -c rollup.config.mjs --environment ENV:prod"
   },
