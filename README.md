@@ -1,4 +1,7 @@
 # quarz_crontab_parse
+![github license](https://img.shields.io/github/license/github-2013/quarz_crontab_parse)
+![Language](https://img.shields.io/badge/language-typescript-brightgreen)
+![npm](https://img.shields.io/npm/v/quarz_crontab_parse.svg?style=flat)
 
 将复杂难懂的quarzcrontab表达式转换为中文
 
