@@ -4,6 +4,8 @@ import typescript from '@rollup/plugin-typescript'
 import babel from "@rollup/plugin-babel";
 import terser from '@rollup/plugin-terser';
 import pkg from './package.json' assert { type: "json" };
+import serve from "rollup-plugin-serve";
+import livereload from "rollup-plugin-livereload";
 
 const production = process.env.ENV === 'prod';
 
@@ -42,7 +44,8 @@ export default {
             // 编译ts
             extensions: ['.js', '.ts']
         }),
-        production &&
-        terser()
+        production && terser(),
+        !production && serve({port: 8123}),
+        !production && livereload("dist")
     ]
 }
