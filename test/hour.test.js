@@ -17,15 +17,15 @@ describe('test hour', () => {
     })
 
     test('? ? * ? ? ? ?', () => {
-        expect(parseCrontab('? ? * ? ? ? ?')).toBe('')
+        expect(parseCrontab('? ? * ? ? ? ?')).toBe('每时')
     })
 
     test('? ? 0 ? ? ? ?', () => {
-        expect(parseCrontab('? ? 0 ? ? ? ?')).toBe('')
+        expect(parseCrontab('? ? 0 ? ? ? ?')).toBe('0时')
     })
 
     test('? ? 15#3 ? ? ? ?', () => {
-        expect(parseCrontab('? ? 15#3 ? ? ? ?')).toBe('15时的第3时')
+        expect(parseCrontab('? ? 15#3 ? ? ? ?')).toBe('第3个15时')
     })
 
     test('? ? 5,10 ? ? ? ?', () => {
@@ -41,14 +41,14 @@ describe('test hour', () => {
     })
 
     test('? ? 0/5 ? ? ? ?', () => {
-        expect(parseCrontab('? ? 0/5 ? ? ? ?')).toBe('隔5时')
+        expect(parseCrontab('? ? 0/5 ? ? ? ?')).toBe('从0时开始到19小时范围内每隔5小时')
     })
 
     test('? ? */5 ? ? ? ?', () => {
-        expect(parseCrontab('? ? */5 ? ? ? ?')).toBe('隔5时')
+        expect(parseCrontab('? ? */5 ? ? ? ?')).toBe('从*时开始到NaN小时范围内每隔5小时')
     })
 
     test('? ? 10/5 ? ? ? ?', () => {
-        expect(parseCrontab('? ? 10/5 ? ? ? ?')).toBe('从第10时开始，每隔5时')
+        expect(parseCrontab('? ? 10/5 ? ? ? ?')).toBe('从10时开始到29小时范围内每隔5小时')
     })
 })

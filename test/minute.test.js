@@ -17,23 +17,23 @@ describe('test minute', () => {
     })
 
     test('? * ? ? ? ? ?', () => {
-        expect(parseCrontab('? * ? ? ? ? ?')).toBe('')
+        expect(parseCrontab('? * ? ? ? ? ?')).toBe('每分')
     })
 
     test('? 0 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 0 ? ? ? ? ?')).toBe('')
+        expect(parseCrontab('? 0 ? ? ? ? ?')).toBe('0分')
     })
 
     test('? 15#3 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 15#3 ? ? ? ? ?')).toBe('15分的第3分')
+        expect(parseCrontab('? 15#3 ? ? ? ? ?')).toBe('第3个15分')
     })
 
     test('? 5,10 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 5,10 ? ? ? ? ?')).toBe('第5和第10分')
+        expect(parseCrontab('? 5,10 ? ? ? ? ?')).toBe('第5和第10分钟')
     })
 
     test('? 5,10,15,20 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 5,10,15,20 ? ? ? ? ?')).toBe('第5、第10、第15和第20分')
+        expect(parseCrontab('? 5,10,15,20 ? ? ? ? ?')).toBe('第5、第10、第15和第20分钟')
     })
 
     test('? 10-40 ? ? ? ? ?', () => {
@@ -41,14 +41,14 @@ describe('test minute', () => {
     })
 
     test('? 0/5 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 0/5 ? ? ? ? ?')).toBe('隔5分')
+        expect(parseCrontab('? 0/5 ? ? ? ? ?')).toBe('从0分开始到55分钟范围内每隔5分钟')
     })
 
     test('? */5 ? ? ? ? ?', () => {
-        expect(parseCrontab('? */5 ? ? ? ? ?')).toBe('隔5分')
+        expect(parseCrontab('? */5 ? ? ? ? ?')).toBe('从0分开始到55分钟范围内每隔5分钟')
     })
 
     test('? 10/5 ? ? ? ? ?', () => {
-        expect(parseCrontab('? 10/5 ? ? ? ? ?')).toBe('从第10分开始，每隔5分')
+        expect(parseCrontab('? 10/5 ? ? ? ? ?')).toBe('从10分开始到65分钟范围内每隔5分钟')
     })
 })

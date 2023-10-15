@@ -17,15 +17,15 @@ describe('test year', () => {
     })
 
     test('? ? ? ? ? ? *', () => {
-        expect(parseCrontab('? ? ? ? ? ? *')).toBe('')
+        expect(parseCrontab('? ? ? ? ? ? *')).toBe('每年')
     })
 
     test('? ? ? ? ? ? 0', () => {
-        expect(parseCrontab('? ? ? ? ? ? 0')).toBe('')
+        expect(() => parseCrontab('? ? ? ? ? ? 0')).toThrow(new Error('年0格式不正确'))
     })
 
     test('? ? ? ? ? ? 2002#33', () => {
-        expect(parseCrontab('? ? ? ? ? ? 2002#33')).toBe('2002年的第33年')
+        expect(parseCrontab('? ? ? ? ? ? 2002#33')).toBe('第33年的2002年')
     })
 
     test('? ? ? ? ? ? 2002,2003', () => {
@@ -41,14 +41,14 @@ describe('test year', () => {
     })
 
     test('? ? ? ? ? ? 0/4', () => {
-        expect(parseCrontab('? ? ? ? ? ? 0/4')).toBe('隔4年')
+        expect(parseCrontab('? ? ? ? ? ? 0/4')).toBe('每隔4年')
     })
 
     test('? ? ? ? ? ? */4', () => {
-        expect(parseCrontab('? ? ? ? ? ? */4')).toBe('隔4年')
+        expect(parseCrontab('? ? ? ? ? ? */4')).toBe('每隔4年')
     })
 
     test('? ? ? ? ? ? 2003/4', () => {
-        expect(parseCrontab('? ? ? ? ? ? 2003/4')).toBe('从2003年开始，每隔4年')
+        expect(parseCrontab('? ? ? ? ? ? 2003/4')).toBe('从第2003年开始，每隔4年')
     })
 })

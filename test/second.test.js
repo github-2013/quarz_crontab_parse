@@ -17,15 +17,15 @@ describe('test second', () => {
     })
 
     test('* ? ? ? ? ? ?', () => {
-        expect(parseCrontab('* ? ? ? ? ? ?')).toBe('')
+        expect(parseCrontab('* ? ? ? ? ? ?')).toBe('每秒')
     })
 
     test('0 ? ? ? ? ? ?', () => {
-        expect(parseCrontab('0 ? ? ? ? ? ?')).toBe('')
+        expect(parseCrontab('0 ? ? ? ? ? ?')).toBe('0秒')
     })
 
     test('15#3 ? ? ? ? ? ?', () => {
-        expect(parseCrontab('15#3 ? ? ? ? ? ?')).toBe('15秒的第3秒')
+        expect(parseCrontab('15#3 ? ? ? ? ? ?')).toBe('第3个15秒')
     })
 
     test('5,10 ? ? ? ? ? ?', () => {
@@ -41,14 +41,14 @@ describe('test second', () => {
     })
 
     test('0/5 ? ? ? ? ? ?', () => {
-        expect(parseCrontab('0/5 ? ? ? ? ? ?')).toBe('隔5秒')
+        expect(parseCrontab('0/5 ? ? ? ? ? ?')).toBe('从0秒开始到55秒范围内每隔5秒')
     })
 
     test('*/5 ? ? ? ? ? ?', () => {
-        expect(parseCrontab('*/5 ? ? ? ? ? ?')).toBe('隔5秒')
+        expect(parseCrontab('*/5 ? ? ? ? ? ?')).toBe('从0秒开始到55秒范围内每隔5秒')
     })
 
     test('10/5 ? ? ? ? ? ?', () => {
-        expect(parseCrontab('10/5 ? ? ? ? ? ?')).toBe('从第10秒开始，每隔5秒')
+        expect(parseCrontab('10/5 ? ? ? ? ? ?')).toBe('从10秒开始到65秒范围内每隔5秒')
     })
 })

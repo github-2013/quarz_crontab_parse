@@ -1,13 +1,11 @@
-export declare const YearReg: RegExp;
-export declare const WeekReg: RegExp;
-export declare const MonthReg: RegExp;
-export declare const DayReg: RegExp;
-export declare const HourReg: RegExp;
-export declare const MinuteReg: RegExp;
-export declare const SecondReg: RegExp;
-export declare const DashReg: {
-    周: RegExp;
+type ValidReg = {
+    [index: string]: RegExp;
 };
+export declare const NormalReg: ValidReg;
+export declare const HashReg: ValidReg;
+export declare const DashReg: ValidReg;
 export declare const TimeUnitLabels: string[];
 export declare function parse(symbol: string, unit: string, extraReg?: RegExp): string;
-export declare function newPrefix(allStr: string, str: string): string;
+export declare function prevProcess(allStr: string, str: string): string;
+export declare function postProcess(allStr: string): string;
+export {};

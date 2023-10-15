@@ -17,38 +17,38 @@ describe('test day', () => {
     })
 
     test('? ? ? * ? ? ?', () => {
-        expect(parseCrontab('? ? * ? ? ? ?')).toBe('')
+        expect(parseCrontab('? ? ? * ? ? ?')).toBe('每日')
     })
 
     test('? ? ? 0 ? ? ?', () => {
-        expect(parseCrontab('? ? 0 ? ? ? ?')).toBe('')
+        expect(parseCrontab('? ? 0 ? ? ? ?')).toBe('0时')
     })
 
     test('? ? ? 15#3 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 15#3 ? ? ?')).toBe('15天的第3天')
+        expect(parseCrontab('? ? ? 15#3 ? ? ?')).toBe('第3个15日')
     })
 
     test('? ? ? 5,10 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 5,10 ? ? ?')).toBe('第5和第10天')
+        expect(parseCrontab('? ? ? 5,10 ? ? ?')).toBe('第5和第10日')
     })
 
     test('? ? ? 5,10,15,20 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 5,10,15,20 ? ? ?')).toBe('第5、第10、第15和第20天')
+        expect(parseCrontab('? ? ? 5,10,15,20 ? ? ?')).toBe('第5、第10、第15和第20日')
     })
 
     test('? ? ? 10-40 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 10-40 ? ? ?')).toBe('10天到40天')
+        expect(parseCrontab('? ? ? 10-40 ? ? ?')).toBe('10日到40日')
     })
 
     test('? ? ? 0/5 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 0/5 ? ? ?')).toBe('隔5天')
+        expect(parseCrontab('? ? ? 0/5 ? ? ?')).toBe('每隔5日')
     })
 
     test('? ? ? */5 ? ? ?', () => {
-        expect(parseCrontab('? ? ? */5 ? ? ?')).toBe('隔5天')
+        expect(parseCrontab('? ? ? */5 ? ? ?')).toBe('每隔5日')
     })
 
     test('? ? ? 10/5 ? ? ?', () => {
-        expect(parseCrontab('? ? ? 10/5 ? ? ?')).toBe('从第10天开始，每隔5天')
+        expect(parseCrontab('? ? ? 10/5 ? ? ?')).toBe('从第10日开始，每隔5日')
     })
 })

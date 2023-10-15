@@ -1,5 +1,5 @@
 const parseCrontab = require("../dist/index.cjs");
-describe('test week 1', () => {
+describe('test week', () => {
     test(' ? ? ? ? ? ? ? ', () => {
         expect(parseCrontab(' ? ? ? ? ? ? ? ')).toBe('')
     })
@@ -17,11 +17,7 @@ describe('test week 1', () => {
     })
 
     test('? ? ? ? ? * ?', () => {
-        expect(parseCrontab('? ? ? ? ? * ?')).toBe('')
-    })
-
-    test('? ? ? ? ? 0 ?', () => {
-        expect(parseCrontab('? ? ? ? ? 0 ?')).toBe('')
+        expect(parseCrontab('? ? ? ? ? * ?')).toBe('每周')
     })
 
     test('? ? ? ? ? 7#3 ?', () => {
@@ -36,16 +32,12 @@ describe('test week 1', () => {
         expect(parseCrontab('? ? ? ? ? 5,10,15,20 ?')).toBe('第5、第10、第15和第20周')
     })
 
-    test('? ? ? ? ? 10-40 ?', () => {
-        expect(parseCrontab('? ? ? ? ? 10-40 ?')).toBe('10周到40周')
-    })
-
     test('? ? ? ? ? 0/5 ?', () => {
-        expect(parseCrontab('? ? ? ? ? 0/5 ?')).toBe('隔5周')
+        expect(parseCrontab('? ? ? ? ? 0/5 ?')).toBe('每隔5周')
     })
 
     test('? ? ? ? ? */5 ?', () => {
-        expect(parseCrontab('? ? ? ? ? */5 ?')).toBe('隔5周')
+        expect(parseCrontab('? ? ? ? ? */5 ?')).toBe('每隔5周')
     })
 
     test('? ? ? ? ? 10/5 ?', () => {

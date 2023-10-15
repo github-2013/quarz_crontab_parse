@@ -12,6 +12,10 @@ type TimeRange = {
     }
 }
 
+type ValidReg = {
+    [index: string]: RegExp
+}
+
 const Week_Enum: Week = {
     '1': {
         nameCn: '星期天',
@@ -43,16 +47,32 @@ const Week_Enum: Week = {
     }
 };
 
-export const YearReg = /^([19|20]\d{2})#(\d+)$/
-export const WeekReg = /^([1-7])#(\d+)$/
-export const MonthReg = /^(1[0-2]|[1-9])#(\d+)$/
-export const DayReg = /^(3[01]|[12][0-9]|[1-9])#(\d+)$/
-export const HourReg = /^([0-23])#(\d+)$/
-export const MinuteReg = /^([0-59])#(\d+)$/
-export const SecondReg = /^([0-59])#(\d+)$/
-
-export const DashReg = {
-    '周': /^([1-7])-(\d+)$/
+export const NormalReg: ValidReg = {
+    '秒': /^([0-5]?[0-9])$/,
+    '分': /^([0-5]?[0-9])$/,
+    '时': /^([01]?[0-9]|2[0-3])$/,
+    '日': /^(3[01]|[12][0-9]|[1-9])$/,
+    '月': /^(1[0-2]|[1-9])$/,
+    '周': /^([1-7])$/,
+    '年': /^((19|20)\d{2})$/
+}
+export const HashReg: ValidReg = {
+    '秒': /^([0-5]?[0-9])#(\d+)$/,
+    '分': /^([0-5]?[0-9])#(\d+)$/,
+    '时': /^([01]?[0-9]|2[0-3])#(\d+)$/,
+    '日': /^(3[01]|[12][0-9]|[1-9])#(\d+)$/,
+    '月': /^(1[0-2]|[1-9])#(\d+)$/,
+    '周': /^([1-7])#(\d+)$/,
+    '年': /^((19|20)\d{2}#(\d+))$/
+}
+export const DashReg: ValidReg = {
+    '秒': /^([0-5]?[0-9])-(\d+)$/,
+    '分': /^([0-5]?[0-9])-(\d+)$/,
+    '时': /^([01]?[0-9]|2[0-3])-(\d+)$/,
+    '日': /^(3[01]|[12][0-9]|[1-9])-(\d+)$/,
+    '月': /^(1[0-2]|[1-9])-(\d+)$/,
+    '周': /^([1-7])-(\d+)$/,
+    '年': /^((19|20)\d{2}-(\d+))$/
 }
 
 const TIME_RANGE: TimeRange = {
@@ -70,30 +90,25 @@ const TIME_RANGE: TimeRange = {
     },
 };
 
-export const TimeUnitLabels = ['秒', '分', '时', '天', '月', '周', '年']
+export const TimeUnitLabels = ['秒', '分', '时', '日', '月', '周', '年']
 
 export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
     switch (true) {
         // 解析 *
         case /^\*$/.test(symbol):
-            return unit
+            return `每${unit}`
         // 解析 ？
         case /^\?$/.test(symbol):
             return ''
         // 解析 #
-        case /^\d+#\d+$/.test(symbol):
-            if (extraReg) {
-                const matches = symbol.match(extraReg);
-                if (matches) {
-                    return getHashLabel(matches![1], matches![2], unit);
-                } else {
-                    throw new Error(`${unit}${symbol}格式不正确`)
-                }
+        case /^\d+#\d+$/.test(symbol): {
+            const matches = symbol.match(HashReg[unit]);
+            if (matches) {
+                return getHashLabel(matches![1], matches![2], unit)
+            } else {
+                throw new Error(`${unit}${symbol}格式不正确`)
             }
-
-            const range = symbol.split('#');
-            const [start, end] = range;
-            return `第${end}${unit}的${start}${unit}`;
+        }
         // 解析 ,
         case /^(\d+,)+\d+$/.test(symbol): {
             return getCommaLabel(symbol, unit)
@@ -127,7 +142,12 @@ export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
         }
         // 解析 数字
         case /^\d+$/.test(symbol): {
-            return getNormalLabel(symbol, unit)
+            const matches = symbol.match(NormalReg[unit]);
+            if (matches) {
+                return getNormalLabel(symbol, unit)
+            } else {
+                throw new Error(`${unit}${symbol}格式不正确`)
+            }
         }
         default: {
             return ''
@@ -145,23 +165,23 @@ function matchWeekName(code: string, cn: boolean = true): string | undefined {
     }
 }
 
-function getNormalLabel(value: string, unitType: string): string {
-    switch (unitType) {
+function getNormalLabel(value: string, unit: string): string {
+    switch (unit) {
         case '秒':
-            return `${value}秒`
+            return `${value}${unit}`
         case '分':
-            return `${value}分`
+            return `${value}${unit}`
         case '时':
-            return `${value}时`
-        case '天':
-            return `${value}时`
+            return `${value}${unit}`
+        case '日':
+            return `${value}${unit}`
         case '月':
-            return `${value}时`
+            return `${value}${unit}`
         case '周': {
-            return `周${matchWeekName(value)}`
+            return `每周${matchWeekName(value)}`
         }
         case '年': {
-            return `${value}年`
+            return `${value}${unit}`
         }
         default: {
             return ''
@@ -183,7 +203,7 @@ function getLLabel(value: string, unit: string): string {
         case '时': {
             return `最后一${unit}`
         }
-        case '天': {
+        case '日': {
             return `最后一${unit}`
         }
         case '月': {
@@ -224,7 +244,7 @@ function getCommaLabel(value: string, unit: string): string {
         case '时': {
             return showRangeLabel(value)
         }
-        case '天': {
+        case '日': {
             return showRangeLabel(value)
         }
         case '月': {
@@ -256,7 +276,7 @@ function getDashLabel(value: string, unit: string): string {
         case '时': {
             return `${start}${unit}到${end}${unit}`
         }
-        case '天': {
+        case '日': {
             return `${start}${unit}到${end}${unit}`
         }
         case '月': {
@@ -285,7 +305,7 @@ function getHashLabel(value1: string, value2: string, unit: string): string {
         case '时': {
             return `第${value2}个${value1}${unit}`
         }
-        case '天': {
+        case '日': {
             return `第${value2}个${value1}${unit}`
         }
         case '月': {
@@ -303,8 +323,9 @@ function getHashLabel(value1: string, value2: string, unit: string): string {
     }
 }
 
-export function newPrefix(allStr: string, str: string): string {
-    if (allStr.length === 0 && str.length === 1) {
+export function prevProcess(allStr: string, str: string): string {
+    return `${allStr}-${str}`
+    /*if (allStr.length === 0 && str.length === 1) {
         return str
     } else if (allStr.length === 1 && str.length === 1) {
         return str
@@ -314,13 +335,16 @@ export function newPrefix(allStr: string, str: string): string {
         return str
     }else {
         return allStr + str
-    }
+    }*/
 }
-
+export function postProcess(allStr: string): string {
+    let allStrList = allStr.split('-')
+    return allStrList.filter(item => item.length).join('')
+}
 function timeGapInfo(value: string, unit: string): string {
     const range = value.split('/');
     const [start, end] = range;
-    const rangeNum = TIME_RANGE[unit].range + parseInt(start) - parseInt(end);
+    const rangeNum = TIME_RANGE[unit].range + parseInt('*' === start ? '0' : start) - parseInt(end);
 
-    return `从${start}${unit}开始到${rangeNum}${TIME_RANGE[unit].unit}范围内每隔${end}${TIME_RANGE[unit].unit},`;
+    return `,从${'*' === start ? '0' : start}${unit}开始到${rangeNum}${TIME_RANGE[unit].unit}范围内每隔${end}${TIME_RANGE[unit].unit}`;
 }

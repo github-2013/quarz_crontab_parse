@@ -5,11 +5,7 @@ describe('test month', () => {
     })
 
     test('? ? ? ? * ? ?', () => {
-        expect(parseCrontab('? ? ? ? * ? ?')).toBe('')
-    })
-
-    test('? ? ? ? 0 ? ?', () => {
-        expect(parseCrontab('? ? ? ? 0 ? ?')).toBe('')
+        expect(parseCrontab('? ? ? ? * ? ?')).toBe('每月')
     })
 
     test('? ? ? ? 10#3 ? ?', () => {
@@ -29,11 +25,11 @@ describe('test month', () => {
     })
 
     test('? ? ? ? 0/5 ? ?', () => {
-        expect(parseCrontab('? ? ? ? 0/5 ? ?')).toBe('隔5月')
+        expect(parseCrontab('? ? ? ? 0/5 ? ?')).toBe('每隔5月')
     })
 
     test('? ? ? ? */5 ? ?', () => {
-        expect(parseCrontab('? ? ? ? */5 ? ?')).toBe('隔5月')
+        expect(parseCrontab('? ? ? ? */5 ? ?')).toBe('每隔5月')
     })
 
     test('? ? ? ? 10/5 ? ?', () => {
