@@ -63,7 +63,7 @@ export const HashReg: ValidReg = {
     '日': /^(3[01]|[12][0-9]|[1-9])#(\d+)$/,
     '月': /^(1[0-2]|[1-9])#(\d+)$/,
     '周': /^([1-7])#(\d+)$/,
-    '年': /^((19|20)\d{2}#(\d+))$/
+    '年': /^((19|20)\d{2})#(\d+)$/
 }
 export const DashReg: ValidReg = {
     '秒': /^([0-5]?[0-9])-(\d+)$/,
@@ -72,7 +72,7 @@ export const DashReg: ValidReg = {
     '日': /^(3[01]|[12][0-9]|[1-9])-(\d+)$/,
     '月': /^(1[0-2]|[1-9])-(\d+)$/,
     '周': /^([1-7])-(\d+)$/,
-    '年': /^((19|20)\d{2}-(\d+))$/
+    '年': /^((19|20)\d{2})-(\d+)$/
 }
 
 const TIME_RANGE: TimeRange = {
@@ -103,8 +103,9 @@ export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
         // 解析 #
         case /^\d+#\d+$/.test(symbol): {
             const matches = symbol.match(HashReg[unit]);
+            debugger
             if (matches) {
-                return getHashLabel(matches![1], matches![2], unit)
+                return getHashLabel(matches, unit)
             } else {
                 throw new Error(`${unit}${symbol}格式不正确`)
             }
@@ -294,28 +295,28 @@ function getDashLabel(value: string, unit: string): string {
     }
 }
 
-function getHashLabel(value1: string, value2: string, unit: string): string {
+function getHashLabel(matches: any, unit: string): string {
     switch (unit) {
         case '秒': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[2]}个${matches[1]}${unit}`
         }
         case '分': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[2]}个${matches[1]}${unit}`
         }
         case '时': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[2]}个${matches[1]}${unit}`
         }
         case '日': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[2]}个${matches[1]}${unit}`
         }
         case '月': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[2]}个${matches[1]}${unit}`
         }
         case '周': {
-            return `第${value2}个${matchWeekName(value1)}`
+            return `第${matches[2]}个${matchWeekName(matches[1])}`
         }
         case '年': {
-            return `第${value2}个${value1}${unit}`
+            return `第${matches[3]}个${matches[1]}${unit}`
         }
         default: {
             return ''
@@ -337,8 +338,30 @@ export function prevProcess(allStr: string, str: string): string {
         return allStr + str
     }*/
 }
-export function postProcess(allStr: string): string {
+export function postProcess(allStr: string, allSymbol: string[]): string {
     let allStrList = allStr.split('-')
+    // 当月与周同时存在时
+    if (allStrList[2] !== '') {
+        if (allStrList[1] !== '') {
+            let temp = allStrList[2]
+            allStrList[2] = allStrList[1]
+            allStrList[1] = temp
+            return allStrList.reverse().slice(0, allSymbol.length).reverse().join('')
+        }
+    }
+    // 查找第一个*
+    let  nearestAsteriskIndex = allSymbol.findIndex(item => item === '*');
+    // *的尾部是否有值
+    let nearRest = 0
+    for (let i = nearestAsteriskIndex; i <allStrList.length ; i++) {
+        if (allStrList[i] && allStrList[i] !== '') {
+            nearRest += 1
+        }
+    }
+
+    if (nearestAsteriskIndex>=0 && nearRest === 0) {
+        return allStrList.reverse().slice(0, allSymbol.length).slice(0, nearestAsteriskIndex+1).reverse().join('')
+    }
     return allStrList.filter(item => item.length).join('')
 }
 function timeGapInfo(value: string, unit: string): string {

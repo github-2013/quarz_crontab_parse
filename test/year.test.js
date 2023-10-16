@@ -25,7 +25,7 @@ describe('test year', () => {
     })
 
     test('? ? ? ? ? ? 2002#33', () => {
-        expect(parseCrontab('? ? ? ? ? ? 2002#33')).toBe('第33年的2002年')
+        expect(parseCrontab('? ? ? ? ? ? 2002#33')).toBe('第33个2002年')
     })
 
     test('? ? ? ? ? ? 2002,2003', () => {

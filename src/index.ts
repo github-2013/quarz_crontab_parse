@@ -28,23 +28,21 @@ function translateToChinese(exp: string, TimeUnits: string[]): string {
     if (allAsterisk) {
       return "每秒"
     }
-
-    debugger
     if (cronSymbols.length === 7) {
       // 解析年 Year
       const years = cronSymbols[6];
       cronChinese = parse(years, TimeUnits[6])
     }
 
-    // 解析月 Month
-    const months = cronSymbols[4];
-    const monthLiteral = parse(months, TimeUnits[4])
-    cronChinese = prevProcess(cronChinese, monthLiteral)
-
     // 解析周 Week
     const weeks = cronSymbols[5];
     const weekLiteral = parse(weeks, TimeUnits[5])
     cronChinese = prevProcess(cronChinese, weekLiteral)
+
+    // 解析月 Month
+    const months = cronSymbols[4];
+    const monthLiteral = parse(months, TimeUnits[4])
+    cronChinese = prevProcess(cronChinese, monthLiteral)
 
     // 解析日 Day
     const days = cronSymbols[3];
@@ -66,7 +64,7 @@ function translateToChinese(exp: string, TimeUnits: string[]): string {
     const secondLiteral = parse(seconds, TimeUnits[0])
     cronChinese = prevProcess(cronChinese, secondLiteral)
 
-    cronChinese = postProcess(cronChinese)
+    cronChinese = postProcess(cronChinese, cronSymbols)
 
     if (cronChinese.length) {
       if (/^[每最第从\d]/.test(cronChinese)) {

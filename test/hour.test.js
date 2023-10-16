@@ -45,7 +45,7 @@ describe('test hour', () => {
     })
 
     test('? ? */5 ? ? ? ?', () => {
-        expect(parseCrontab('? ? */5 ? ? ? ?')).toBe('从*时开始到NaN小时范围内每隔5小时')
+        expect(parseCrontab('? ? */5 ? ? ? ?')).toBe('从0时开始到19小时范围内每隔5小时')
     })
 
     test('? ? 10/5 ? ? ? ?', () => {

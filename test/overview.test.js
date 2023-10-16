@@ -110,7 +110,7 @@ describe('test overview', () => {
     })
 
     test('0 15 10 6#4 * ?', () => {
-        expect(parseCrontab('0 15 10 6#4 * ?')).toBe('每月第4日的6日10时15分0秒')
+        expect(parseCrontab('0 15 10 6#4 * ?')).toBe('每月第4个6日10时15分0秒')
     })
 
     test('0 15 10 ? * ? ?', () => {
