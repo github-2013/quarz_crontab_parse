@@ -3,6 +3,7 @@
 ![Language](https://img.shields.io/badge/language-typescript-brightgreen)
 ![npm](https://img.shields.io/npm/v/quarz_crontab_parse.svg?style=flat)
 ![Github Actions](https://github.com/github-2013/quarz_crontab_parse/actions/workflows/tests.yml/badge.svg)
+![](https://img.shields.io/github/languages/top/github-2013/quarz_crontab_parse?logo=github)
 
 将复杂难懂的quarzcrontab表达式转换为中文
 
