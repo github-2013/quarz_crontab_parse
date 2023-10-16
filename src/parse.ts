@@ -103,7 +103,6 @@ export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
         // 解析 #
         case /^\d+#\d+$/.test(symbol): {
             const matches = symbol.match(HashReg[unit]);
-            debugger
             if (matches) {
                 return getHashLabel(matches, unit)
             } else {
