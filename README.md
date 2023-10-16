@@ -39,7 +39,7 @@
 ```
 
 ## Usage
-### esmodule下使用
+### ESModule下使用
 ```
 npm install quarz_crontab_parse -S
 
