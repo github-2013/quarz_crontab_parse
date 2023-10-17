@@ -32,15 +32,27 @@ describe('test week', () => {
         expect(parseCrontab('? ? ? ? ? 5,10,15,20 ?')).toBe('第5、第10、第15和第20周')
     })
 
-    test('? ? ? ? ? 0/5 ?', () => {
-        expect(parseCrontab('? ? ? ? ? 0/5 ?')).toBe('每隔5周')
-    })
-
     test('? ? ? ? ? */5 ?', () => {
         expect(parseCrontab('? ? ? ? ? */5 ?')).toBe('每隔5周')
     })
 
     test('? ? ? ? ? 10/5 ?', () => {
-        expect(parseCrontab('? ? ? ? ? 10/5 ?')).toBe('从第10周开始，每隔5周')
+        expect(() => parseCrontab('? ? ? ? ? 10/5 ?')).toThrow(new Error('周10/5格式不正确'))
+    })
+
+    test('? ? ? ? ? 0/5 ?', () => {
+        expect(parseCrontab('? ? ? ? ? 0/5 ?')).toBe('每隔5周')
+    })
+
+    test('? ? ? ? ? -1/5 ?', () => {
+        expect(() => parseCrontab('? ? ? ? ? -1/5 ?')).toThrow(new Error('值域不能为负数'))
+    })
+
+    test('? ? ? ? ? 32/5 ?', () => {
+        expect(() => parseCrontab('? ? ? ? ? 32/5 ?')).toThrow(new Error('周32/5格式不正确'))
+    })
+
+    test('? ? ? ? ? 32-5 ?', () => {
+        expect(() => parseCrontab('? ? ? ? ? 32-5 ?')).toThrow(new Error('周32-5格式不正确'))
     })
 })

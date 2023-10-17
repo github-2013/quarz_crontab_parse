@@ -48,31 +48,40 @@ const Week_Enum: Week = {
 };
 
 export const NormalReg: ValidReg = {
-    '秒': /^([0-5]?[0-9])$/,
-    '分': /^([0-5]?[0-9])$/,
-    '时': /^([01]?[0-9]|2[0-3])$/,
-    '日': /^(3[01]|[12][0-9]|[1-9])$/,
-    '月': /^(1[0-2]|[1-9])$/,
-    '周': /^([1-7])$/,
-    '年': /^((19|20)\d{2})$/
+    '秒': /^([0-5]?[*0-9])$/,
+    '分': /^([0-5]?[*0-9])$/,
+    '时': /^([01]?[*0-9]|2[0-3])$/,
+    '日': /^([*01-9]|[12][0-9]|3[01])$/,
+    '月': /^([*0-9]|1[0-2])$/,
+    '周': /^([*01-7])$/,
+    '年': /^((19[7-9][0-9])|(20[0-9][0-9]))$/
 }
 export const HashReg: ValidReg = {
-    '秒': /^([0-5]?[0-9])#(\d+)$/,
-    '分': /^([0-5]?[0-9])#(\d+)$/,
-    '时': /^([01]?[0-9]|2[0-3])#(\d+)$/,
-    '日': /^(3[01]|[12][0-9]|[1-9])#(\d+)$/,
-    '月': /^(1[0-2]|[1-9])#(\d+)$/,
-    '周': /^([1-7])#(\d+)$/,
-    '年': /^((19|20)\d{2})#(\d+)$/
+    '秒': /^([0-5]?[*0-9])#(\d+)$/,
+    '分': /^([0-5]?[*0-9])#(\d+)$/,
+    '时': /^([01]?[*0-9]|2[0-3])#(\d+)$/,
+    '日': /^([*01-9]|[12][0-9]|3[01])#(\d)$/,
+    '月': /^([*0-9]|1[0-2])#(\d+)$/,
+    '周': /^([*01-7])#(\d+)$/,
+    '年': /^((19[7-9][0-9])|(20[0-9][0-9]))#(\d+)$/
+}
+export const SlashReg: ValidReg = {
+    '秒': /^([0-5]?[*0-9])\/(\d+)$/,
+    '分': /^([0-5]?[*0-9])\/(\d+)$/,
+    '时': /^([01]?[*0-9]|2[0-3])\/(\d+)$/,
+    '日': /^([*01-9]|[12][0-9]|3[01])\/(\d)$/,
+    '月': /^([*0-9]|1[0-2])\/(\d+)$/,
+    '周': /^([*01-7])\/(\d+)$/,
+    '年': /^((19[7-9][0-9])|(20[0-9][0-9])|[0*])\/(\d+)$/
 }
 export const DashReg: ValidReg = {
-    '秒': /^([0-5]?[0-9])-(\d+)$/,
-    '分': /^([0-5]?[0-9])-(\d+)$/,
-    '时': /^([01]?[0-9]|2[0-3])-(\d+)$/,
-    '日': /^(3[01]|[12][0-9]|[1-9])-(\d+)$/,
-    '月': /^(1[0-2]|[1-9])-(\d+)$/,
-    '周': /^([1-7])-(\d+)$/,
-    '年': /^((19|20)\d{2})-(\d+)$/
+    '秒': /^([0-5]?[*0-9])-(\d+)$/,
+    '分': /^([0-5]?[*0-9])-(\d+)$/,
+    '时': /^([01]?[*0-9]|2[0-3])-(\d+)$/,
+    '日': /^([01-9]|[12][0-9]|3[01])-(\d)$/,
+    '月': /^([0-9]|1[0-2])-(\d+)$/,
+    '周': /^([*01-7])-(\d+)$/,
+    '年': /^((19[7-9][0-9])|(20[0-9][0-9]))-((19[7-9][0-9])|(20[0-9][0-9]))$/
 }
 
 const TIME_RANGE: TimeRange = {
@@ -90,9 +99,10 @@ const TIME_RANGE: TimeRange = {
     },
 };
 
-export const TimeUnitLabels = ['秒', '分', '时', '日', '月', '周', '年']
-
 export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
+    if (parseInt(symbol) < 0) {
+        throw new Error("值域不能为负数")
+    }
     switch (true) {
         // 解析 *
         case /^\*$/.test(symbol):
@@ -115,19 +125,29 @@ export function parse(symbol: string, unit: string, extraReg?: RegExp): string {
         }
         // 解析 -
         case /^[0-9]+-[0-9]+$/.test(symbol): {
-            return getDashLabel(symbol, unit);
+            const matches = symbol.match(DashReg[unit]);
+            if (matches) {
+                return getDashLabel(symbol, unit);
+            } else {
+                throw new Error(`${unit}${symbol}格式不正确`)
+            }
         }
         // 解析 /
         case /^[*0-9]+\/[0-9]+$/.test(symbol): {
-            if (["时", "分", "秒"].includes(unit)) {
-                return timeGapInfo(symbol, unit);
-            } else {
-                const range = symbol.split('/');
-                const [start, end] = range
-                if (['0', '*'].includes(start)) {
-                    return `每隔${end}${unit}`
+            const matches = symbol.match(SlashReg[unit]);
+            if (matches) {
+                if (["时", "分", "秒"].includes(unit)) {
+                    return timeGapInfo(symbol, unit);
+                } else {
+                    const range = symbol.split('/');
+                    const [start, end] = range
+                    if (['0', '*'].includes(start)) {
+                        return `每隔${end}${unit}`
+                    }
+                    return `从第${start}${unit}开始，每隔${end}${unit}`
                 }
-                return `从第${start}${unit}开始，每隔${end}${unit}`
+            } else {
+                throw new Error(`${unit}${symbol}格式不正确`)
             }
         }
         // 解析 L
@@ -315,7 +335,7 @@ function getHashLabel(matches: any, unit: string): string {
             return `第${matches[2]}个${matchWeekName(matches[1])}`
         }
         case '年': {
-            return `第${matches[3]}个${matches[1]}${unit}`
+            return `第${matches[0].split('#')[1]}个${matches[0].split('#')[0]}${unit}`
         }
         default: {
             return ''

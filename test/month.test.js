@@ -24,10 +24,6 @@ describe('test month', () => {
         expect(parseCrontab('? ? ? ? 10-40 ? ?')).toBe('10月到40月')
     })
 
-    test('? ? ? ? 0/5 ? ?', () => {
-        expect(parseCrontab('? ? ? ? 0/5 ? ?')).toBe('每隔5月')
-    })
-
     test('? ? ? ? */5 ? ?', () => {
         expect(parseCrontab('? ? ? ? */5 ? ?')).toBe('每隔5月')
     })
@@ -38,5 +34,21 @@ describe('test month', () => {
 
     test('? ? ? ? 5L ? ?', () => {
         expect(parseCrontab('? ? ? ? 5L ? ?')).toBe('最后一月的星期四')
+    })
+
+    test('? ? ? ? 0/5 ? ?', () => {
+        expect(parseCrontab('? ? ? ? 0/5 ? ?')).toBe('每隔5月')
+    })
+
+    test('? ? ? ? -1/5 ? ?', () => {
+        expect(() => parseCrontab('? ? ? ? -1/5 ? ?')).toThrow(new Error('值域不能为负数'))
+    })
+
+    test('? ? ? ? 32/5 ? ?', () => {
+        expect(() => parseCrontab('? ? ? ? 32/5 ? ?')).toThrow(new Error('月32/5格式不正确'))
+    })
+
+    test('? ? ? ? 32-5 ? ?', () => {
+        expect(() => parseCrontab('? ? ? ? 32-5 ? ?')).toThrow(new Error('月32-5格式不正确'))
     })
 })
