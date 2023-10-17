@@ -11,14 +11,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-nodeModules-${{ hashFiles('package-lock.json') }}-${{ hashFiles('package.json') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node-version }}-nodeModules-
+        
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: npm install
       - run: npm test
-
-  publish-gpr:
+  
+  publish:
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -30,7 +38,9 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+      - name: Install Dedepends
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
       - run: npm run build
       - run: npm publish
         env:
