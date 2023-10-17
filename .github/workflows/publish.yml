@@ -23,7 +23,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm install
+      - name: Install Dependenses
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm install
       - run: npm test
   
   publish:
