@@ -19,6 +19,6 @@ jobs:
       - name: Install Package
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: npm install
       - run: npm test
