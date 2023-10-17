@@ -1,6 +1,6 @@
 {
   "name": "quarz_crontab_parse",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "解析QuarzCrontab表达式为中文时间",
   "keywords": [
     "typescript",
