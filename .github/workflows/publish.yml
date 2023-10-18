@@ -15,9 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install Packages
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm install
+      - run: npm install
       - run: npm test
       - name: Cache node_modules
         id: cache-node-modules
